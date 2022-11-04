@@ -1,0 +1,28 @@
+{
+  "name": "hackernews-graphql-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tkm-mkzk/hackernews-graphql-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tkm-mkzk/hackernews-graphql-backend/issues"
+  },
+  "homepage": "https://github.com/tkm-mkzk/hackernews-graphql-backend#readme",
+  "dependencies": {
+    "@prisma/client": "^4.5.0",
+    "apollo-server": "^2.26.1",
+    "graphql": "^14.7.0"
+  },
+  "devDependencies": {
+    "prisma": "^4.5.0"
+  }
+}
