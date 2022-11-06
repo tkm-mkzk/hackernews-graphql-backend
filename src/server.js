@@ -2,41 +2,35 @@ const { ApolloServer, gql } = require('apollo-server');
 const fs = require('fs');
 const path = require('path');
 
-//HacksNewsの一つ一つの投稿
-let links = [
-  {
-    id: 'link-0',
-    description: 'GraphQLチュートリアルをUdemyで学ぶ',
-    url: 'www.udemy-graphql-tutorial.com',
-  },
-];
+const { PrismaClient } = require('@prisma/client');
+const { getUserId } = require('./utils');
+
+//リゾルバ関係のファイル
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const Link = require('./resolvers/Link');
+const User = require('./resolvers/User');
+
+const prisma = new PrismaClient();
 
 //リゾルバ関数
 const resolvers = {
-  Query: {
-    info: () => 'HackerNewsクローン',
-    feed: () => links,
-  },
-
-  Mutation: {
-    post: (parent, args) => {
-      let idCount = links.length;
-
-      const link = {
-        id: `link-${idCount++}`,
-        description: args.description,
-        url: args.url,
-      };
-
-      links.push(link);
-      return link;
-    },
-  },
+  Query,
+  Mutation,
+  Link,
+  User,
 };
 
 const server = new ApolloServer({
   typeDefs: fs.readFileSync(path.join(__dirname, 'schema.graphql'), 'utf-8'),
   resolvers,
+  context: ({ req }) => {
+    return {
+      ...req,
+      prisma,
+      userId: req && req.headers.authorization ? getUserId(req) : null,
+    };
+  },
 });
 
 server
